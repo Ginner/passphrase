@@ -15,7 +15,9 @@
 
 # TODO: Long options, Nah, getopts doesn't seem to support it.
 # TODO: Check for a sane length of the word list (if wc -l < 2500 print: "Bad security my dude!")
-# If there are multiple words in any lines, the first word is used
+# If --num-words is larger than the number of words in the wordlist, the words in the wordlist are all used and determines the length of the passphrase.
+# TODO: Check the uniqueness of the word list
+# Formatting my 10k wordlist is instantaneous...
 
 # Default options
 num_words="4"
@@ -27,17 +29,15 @@ leet="False"
 min_len="4"
 verbose="False"
 
-while getopts ":n:l:CcsNm:hv" opt; do
+while getopts ":w:n:CcsNm:hv" opt; do
     case ${opt} in
-        \? )
-            # Default
-            ;;
-        n ) num_words="$OPTARG" ;;
         w )
             if [ -r "$OPTARG" ] ; then
                 word_list="$OPTARG"
+            fi
 
             ;;
+        n ) num_words="$OPTARG" ;;
         C ) capitalize="True" ;;
         c ) output="clipboard" ;;
         s ) sep_str="$OPTARG" ;;
@@ -48,6 +48,26 @@ while getopts ":n:l:CcsNm:hv" opt; do
     esac
 done
 shift $((OPTIND -1))
+
+formatted_wlist=$( cat $word_list \
+    | tr -s ' ' '\n' \
+    | awk 'length($1) > $min_len { print $1 }' \
+    | sort \
+    | uniq -i )
+
+num_lines=$( wc --lines < $formatted_wlist )
+
+if [ $num_lines -lt 2500 ]; then
+    echo "Your wordlist is short, this might have security implications, you should expand it."
+elif [ $num_lines -gt 45000 ]; then
+    echo "Wow! Your word list is mighty big, this might have some performance impact."
+fi
+
+phrase_list=  $( shuf -n $num_words $formatted_wlist )
+
+if [ $capitalize=="True" ] ; then
+    phrase_list=$(sed 's/[^ ]\+/\L\u&/g' $phrase_list)
+fi
 
 # Working commands:
 # awk 'length($2) > 4 { print $2 }' lemma-10k-2017-ex.txt | shuf -n4 | sed 's/[^ ]\+/\L\u&/g' | tr -d '\n'
