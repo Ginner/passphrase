@@ -1,4 +1,3 @@
-spelling
 a
 aardvark
 aardwolf
@@ -2328,8 +2327,6 @@ antenuptial
 antepartum
 antependium
 antepenult
-antepenult
-antepenultimate
 antepenultimate
 anterior
 anteriority
@@ -4993,7 +4990,6 @@ beechen
 beechnut
 beef
 beefburger
-beefcake
 beefcake
 beefeater
 beefiness
@@ -32942,7 +32938,6 @@ lacunar
 lacunaria
 lacunose
 lacustrine
-lacustrine
 lacy
 lad
 ladder
@@ -35927,7 +35922,6 @@ metaphoric
 metaphorical
 metaphorically
 metaphysic
-metaphysic
 metaphysical
 metaphysically
 metaphysician
@@ -36984,7 +36978,6 @@ moody
 moog
 mooing
 moon
-moonstruck
 moonbeam
 mooncalf
 mooned
@@ -37008,6 +37001,7 @@ moonset
 moonshine
 moonshiner
 moonstone
+moonstruck
 moonwalk
 moonwalker
 moonward
@@ -52227,13 +52221,13 @@ stemware
 stench
 stencil
 steno
-stenothermal
 stenograph
 stenographer
 stenographic
 stenographical
 stenography
 stenosis
+stenothermal
 stenotype
 stent
 stentorian
@@ -52710,7 +52704,6 @@ striker
 striking
 strikingly
 string
-stringboard
 stringboard
 stringcourse
 stringed
@@ -61647,8 +61640,8 @@ youthfulness
 youtube
 yow
 yowl
-yoyo
 yo-yo
+yoyo
 yr
 ytterbium
 yttrium
