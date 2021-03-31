@@ -52,8 +52,7 @@ shift $((OPTIND -1))
 formatted_wlist=$( cat $word_list \
     | tr -s ' ' '\n' \
     | awk 'length($1) > $min_len { print $1 }' \
-    | sort \
-    | uniq -i )
+    | sort -uf )
 
 num_lines=$( wc --lines < $formatted_wlist )
 
