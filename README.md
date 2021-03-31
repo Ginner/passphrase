@@ -5,14 +5,6 @@ I sometimes use passphrases as described in the linked comic.
 Humans are bad at randomness, so making words up myself was unreliable and insecure.
 I've tried the online generators, but cannot shake the feeling that once the passphrase is provided, it simultaneously end up, prehashed, in all the rainbow tables.
 
-The script is intended to be short and easily auditable.
-I am a novice at shell scripting and as such, the script should be rather simple.
-
-I'll be tremendously grateful for any contribution, however, the transparency of the program is paramount in my opinion.
-I will be hesitant to excessively complicate the program in order to safeguard against a theoretical attack.
-
-**The script has to remain easily auditable, even by a bash novice like myself.
-I find this paramount for the trust in the function it provides.**
 
 ## Word lists
 I've found comprehensive word lists online consisting of over 300k words.
@@ -51,6 +43,15 @@ The program will complain if the list is shorter than 2500 words (I guess that w
 
 You can gauge the list with something like `$ cat wordlist.txt | tail -n 8000 | head -n 40` to see 40 words somewhere in the middle of the file.
 
+## Contributing
+The script is intended to be short and easily auditable.
+
+I'll be tremendously grateful for any contribution, however, the transparency of the program is paramount in my opinion.
+I will be hesitant to excessively complicate the program in order to safeguard against a theoretical attack.
+
+**The script has to remain easily auditable, even by a bash novice like myself.
+I find this paramount for the trust in the function it provides.**
+
 ## Disclaimers
 
 ### Security
@@ -59,8 +60,10 @@ I am in no way well versed in the techniques and technicalities of security.
 There are no cryptography involved in the generation of the passphrases.
 I have, however, tried to include some security-minded checks.
 
-I see various attack vectors of the script and I'll list some her:
-- An attacker with access to your computer will be able to swap out your word list. Now, it is checked for shortness and uniqueness, however a rather long word list consisting of `word1, word2, ..., wordn` will pass those tests and make the passphrase sucky.
+Some good advice could be:
+- Check your word list. The program, rudimentarily, checks it for shortness and uniqueness, however a rather long word list consisting of `word1, word2, ..., wordn` will pass those tests and make the passphrase sucky.
+- Check the output (you need to remember it, right?). This will mitigate the problem above.
+- Use words with a length of at least 4 characters and use at least 4 words in a phrase.
 
 ### Performance
 The script is just various readily available Linux commands chained together and I have not optimized it for performance.
