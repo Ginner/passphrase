@@ -9,14 +9,13 @@
 #   - Output to clipboard (default: stdout) -c, --clipboard
 #   - Separator? (default: None) -s,--separator <separator string>
 #   - 1337 speak? (default: Nope) -N,--leet
-#   - Minimum word length (default: 4) -m,--min-word-len<#>
+#   - Minimum word length (default: 4) -m,--min-word-len <#>
+#   - Maximum word length (default: None) -M, --max-word-len <#>
 #   - Show help (default: no) -h,--help
 #   - Verbose output (default: no) -v,--verbose
 
 # TODO: Long options, Nah, getopts doesn't seem to support it.
-# TODO: Check for a sane length of the word list (if wc -l < 2500 print: "Bad security my dude!")
 # If --num-words is larger than the number of words in the wordlist, the words in the wordlist are all used and determines the length of the passphrase.
-# TODO: Check the uniqueness of the word list
 # Formatting my 10k wordlist is instantaneous...
 
 # Default options
@@ -27,6 +26,7 @@ output="sdtout"
 sep=""
 leet="False"
 min_len="4"
+max_len="12"
 verbose="False"
 
 while getopts ":w:n:CcsNm:hv" opt; do
@@ -43,6 +43,7 @@ while getopts ":w:n:CcsNm:hv" opt; do
         s ) sep_str="$OPTARG" ;;
         N ) leet="True" ;;
         m ) min_len="$OPTARG" ;;
+        M ) max_len="$OPTARG" ;;
         h )
             ;;
     esac
@@ -51,7 +52,7 @@ shift $((OPTIND -1))
 
 formatted_wlist=$( cat $word_list \
     | tr -s ' ' '\n' \
-    | awk 'length($1) > $min_len { print $1 }' \
+    | awk '{ if(( length($1) > $min_len ) && (length($1) < $max_len )) print $1 }' \
     | sort -uf )
 
 num_lines=$( wc --lines < $formatted_wlist )
@@ -62,7 +63,7 @@ elif [ $num_lines -gt 45000 ]; then
     echo "Wow! Your word list is mighty big, this might have some performance impact."
 fi
 
-phrase_list=  $( shuf -n $num_words $formatted_wlist )
+phrase_list=$( shuf -n $num_words $formatted_wlist )
 
 if [ $capitalize=="True" ] ; then
     phrase_list=$(sed 's/[^ ]\+/\L\u&/g' $phrase_list)
