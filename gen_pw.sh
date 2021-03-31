@@ -15,6 +15,7 @@
 #   - Verbose output (default: no) -v,--verbose
 
 # TODO: Long options, Nah, getopts doesn't seem to support it.
+# TODO: -F option to force through warnings
 # If --num-words is larger than the number of words in the wordlist, the words in the wordlist are all used and determines the length of the passphrase.
 # Formatting my 10k wordlist is instantaneous...
 
