@@ -21,13 +21,13 @@
 # Default options
 num_words="4"
 word_list="./wordlist"
-capitalize="False"
+capitalize="0"
 output="sdtout"
 sep=""
-leet="False"
+leet="0"
 min_len="4"
 max_len="12"
-verbose="False"
+verbose="0"
 
 while getopts ":w:n:CcsNm:hv" opt; do
     case ${opt} in
@@ -38,12 +38,13 @@ while getopts ":w:n:CcsNm:hv" opt; do
 
             ;;
         n ) num_words="$OPTARG" ;;
-        C ) capitalize="True" ;;
+        C ) capitalize="1" ;;
         c ) output="clipboard" ;;
         s ) sep_str="$OPTARG" ;;
-        N ) leet="True" ;;
+        N ) leet="1" ;;
         m ) min_len="$OPTARG" ;;
         M ) max_len="$OPTARG" ;;
+        v ) verbose="1"
         h )
             ;;
     esac
