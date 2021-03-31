@@ -30,6 +30,31 @@ min_len="4"
 max_len="12"
 verbose="0"
 
+helptext <<EOH
+Usage: passphrase [option]
+Generates a passphrase and prints to standard output.
+
+    -w FILE     Word list to generate phrase from
+    -n INTEGER  Number of words to use in the phrase
+    -C          Capitalize the used words
+    -c          Output to clipboard
+    -s STRING   Separator string
+    -N          Use '1337'-speak
+    -m INTEGER  Minimum length of the words used in the phrase
+    -M INTEGER  Maximum length of the words used in the phrase
+    -v          Verbose output
+    -h          Print this help and exit
+    -V          Print version information and exit
+
+Examples:
+    passphrase      Outputs a 4 word passphrase using words with a minimum
+                    length of 5 characters.
+    passphrase -n 5 -s "-"
+                    Outputs a 5 word passphrase with words separated by a single dash.
+
+Further documentation, help and contact options available here: https://github.com/Ginner/passphrase
+EOH
+
 while getopts ":w:n:CcsNm:hv" opt; do
     case ${opt} in
         w )
