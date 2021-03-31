@@ -51,9 +51,9 @@ done
 shift $((OPTIND -1))
 
 formatted_wlist=$( cat $word_list \
-    | tr -s ' ' '\n' \
+    | tr --squeeze-repeats ' ' '\n' \
     | awk '{ if(( length($1) > $min_len ) && (length($1) < $max_len )) print $1 }' \
-    | sort -uf )
+    | sort --unique --ignore-case )
 
 num_lines=$( wc --lines < $formatted_wlist )
 
@@ -63,7 +63,7 @@ elif [ $num_lines -gt 45000 ]; then
     echo "Wow! Your word list is mighty big, this might have some performance impact."
 fi
 
-phrase_list=$( shuf -n $num_words $formatted_wlist )
+phrase_list=$( shuf --head-count=$num_words $formatted_wlist )
 
 if [ $capitalize=="True" ] ; then
     phrase_list=$(sed 's/[^ ]\+/\L\u&/g' $phrase_list)
