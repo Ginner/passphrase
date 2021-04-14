@@ -52,6 +52,10 @@ I will be hesitant to excessively complicate the program in order to safeguard a
 **The script has to remain easily auditable, even by a bash novice like myself.
 I find this paramount for the trust in the function it provides.**
 
+## Roadmap/Todos
+- [ ] Clear the passphrase in the clipboard after 45 seconds (Like `pass` does)
+      It'd be cool if the old content was preserved and available after the 45 second.
+
 ## Disclaimers
 
 ### Security
