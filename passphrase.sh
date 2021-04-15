@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #
 # Generate a passphrase based on the XKCD-comic: https://xkcd.com/936/
 
@@ -21,16 +21,16 @@
 
 # Default options
 num_words="4"
-word_list="./wordlist"
-capitalize="0"
+word_list="./wordlist2.txt"
+capitalize="1"
 output="sdtout"
 sep=""
 leet="0"
 min_len="4"
-max_len="12"
+max_len="10"
 verbose="0"
 
-helptext <<EOH
+read -r -d '' helptext <<- 'EOH'
 Usage: passphrase [option]
 Generates a passphrase and prints to standard output.
 
@@ -58,7 +58,7 @@ EOH
 while getopts ":w:n:CcsNm:hv" opt; do
     case ${opt} in
         w )
-            if [ -r "$OPTARG" ] ; then
+            if [[ -r "$OPTARG" ]] ; then
                 word_list="$OPTARG"
             fi
 
@@ -70,32 +70,76 @@ while getopts ":w:n:CcsNm:hv" opt; do
         N ) leet="1" ;;
         m ) min_len="$OPTARG" ;;
         M ) max_len="$OPTARG" ;;
-        v ) verbose="1"
+        v ) verbose="1" ;;
         h )
             ;;
     esac
 done
-shift $((OPTIND -1))
+shift $((OPTIND - 1))
 
-formatted_wlist=$( cat $word_list \
-    | tr --squeeze-repeats ' ' '\n' \
-    | awk '{ if(( length($1) > $min_len ) && (length($1) < $max_len )) print $1 }' \
-    | sort --unique --ignore-case )
+# cat $word_list
 
-num_lines=$( wc --lines < $formatted_wlist )
+formatted_wlist=$( tr --squeeze-repeats ' ' '\n' < "$word_list" \
+    | awk -v a="$min_len" -v b="$max_len" '{ if( length($1) > a && length($1) < b ) print $1 }' \
+    | sort --unique --ignore-case
+)
+# formatted_wlist=$( cat $word_list \
+#     | tr --squeeze-repeats ' ' '\n' \
+#     | awk '{ if(( length("$1") > "$min_len" ) && (length("$1") < "$max_len" )) print "$1" }' -
+# )
 
-if [ $num_lines -lt 2500 ]; then
+# Load the wordlist into a variable
+# word_list=$(<"$word_list")
+
+function format() {
+    command cat "$@" \
+        | tr --squeeze-repeats ' ' '\n' \
+        | awk -v a="$min_len" -v b="$max_len" '{ if(( length("$1") > a ) && (length("$1") < b )) print "$1" }' \
+        | sort --unique --ignore-case
+# ( cat "$word_list" \
+#     | tr --squeeze-repeats ' ' '\n' \
+#     | awk '{ if(( length("$1") > "$min_len" ) && (length("$1") < "$max_len" )) print "$1" }' \
+#     | sort --unique --ignore-case )
+}
+
+# Remove empty lines and spaces
+# word_list=$( tr --squeeze-repeats ' ' '\n' < <(echo "$word_list" ) )
+
+# Enforce requirements to length
+# word_list=$( awk '{ if(( length("$1") > "$min_len" ) && (length("$1") < "$max_len" )) print "$1" }' <<< "$word_list")
+
+# Remove repetitions
+# formatted_wlist=$( sort --unique --ignore-case "$word_list")
+
+# formatted_wlist=$( cat "$word_list" \
+#     | tr --squeeze-repeats ' ' '\n' \
+#     | awk '{ if(( length("$1") > "$min_len" ) && (length("$1") < "$max_len" )) print "$1" }' \
+#     | sort --unique --ignore-case )
+
+# echo "Test + ${formatted_wlist}"
+
+num_lines=$( wc --lines <<<"$formatted_wlist" )
+
+if [[ "$num_lines" -lt 2048 ]]; then
     echo "Your wordlist is short, this might have security implications, you should expand it."
-elif [ $num_lines -gt 45000 ]; then
+elif [[ "$num_lines" -gt 45000 ]]; then
     echo "Wow! Your word list is mighty big, this might have some performance impact."
 fi
 
-phrase_list=$( shuf --head-count=$num_words $formatted_wlist )
+phrase_list=$( shuf --head-count="$num_words" <<<"$formatted_wlist" )
 
-if [ $capitalize=="True" ] ; then
-    phrase_list=$(sed 's/[^ ]\+/\L\u&/g' $phrase_list)
+if [[ $capitalize == "1" ]] ; then
+    # phrase_list=$( sed 's/[^ ]\+/\L\u&/g' <<<"$phrase_list" ) ;
+    phrase_list=$( sed 's/[^ ]\+/\L\u&/g' <<<"$phrase_list" ) ;
 fi
 
+phrase=$( tr -d '\n' <<<"$phrase_list" )
+# phrase=$( tr -s ' ' '\n' <<<"$phrase_list" )
+# phrase=$( echo "$phrase_list" | tr -s ' ' '\n' )
+
+echo "$phrase"
 # Working commands:
 # awk 'length($2) > 4 { print $2 }' lemma-10k-2017-ex.txt | shuf -n4 | sed 's/[^ ]\+/\L\u&/g' | tr -d '\n'
 # cat <file> | tr -s ' ' '\n'  # Strips spaces and empty lines from <file>
+
+exit 0
