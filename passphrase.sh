@@ -1,4 +1,5 @@
-#!/bin/bash -x
+#!/bin/bash
+#-x
 #
 # Generate a passphrase based on the XKCD-comic: https://xkcd.com/936/
 
@@ -115,7 +116,6 @@ function copy_prg() {
     fi
 }
 
-# clipboard_prg=copy_prg
 
 if [[ "$output" == "clipboard" ]] ; then
     case $(copy_prg) in
@@ -134,21 +134,6 @@ if [[ "$output" == "clipboard" ]] ; then
             exit 1
             ;;
     esac
-    # if [[ command -v xsel &> /dev/null ]]; then
-    #     # old_content=$( xsel --output )
-    #     xsel --input --clipboard --selectionTimeout 45000 < "$phrase"
-    #     echo "Phrase copied to clipboard, it will clear in 45 seconds."
-    #     # cmd="sleep 46 && xsel --input < "$old_content" &"
-    # elif [[ command -v xclip &> /dev/null ]]; then
-    #     # old_content=$( xclip -out )
-    #     xclip -in -selection "clipboard" < "$phrase"
-    #     echo "Phrase copied to clipboard and it will remain there until replaced!"
-    #     echo "It is highly recommended that you copy something to the clipboard"
-    #     echo "selection when you are done using the phrase."
-    # else
-    #     echo "A program for manipulating the X selection cannot be found."
-    #     echo "xsel(recommended) or xclip is required."
-    # fi
     exit 0
 fi
 
