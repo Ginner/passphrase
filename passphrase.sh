@@ -74,6 +74,8 @@ while getopts ":w:n:CcsNm:M:hv" opt; do
         h ) echo "$helptext"
             exit 0
             ;;
+        * ) echo "Error. Use passphrase -h for help." >&2
+            exit 1
     esac
 done
 shift $((OPTIND - 1))
