@@ -23,7 +23,7 @@
 # Default options
 num_words="4"
 word_list="./wordlist.txt"
-capitalize="1"
+capitalize="0"
 output="sdtout"
 sep_str=""
 leet="0"
