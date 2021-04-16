@@ -17,6 +17,7 @@
 
 # TODO: Long options, Nah, getopts doesn't seem to support it.
 # TODO: -F option to force through warnings
+# TODO: Suppress output other than the phrase/suppress warnings.
 # If --num-words is larger than the number of words in the wordlist, the words in the wordlist are all used and determines the length of the passphrase.
 # Formatting my 10k wordlist is instantaneous...
 
@@ -24,7 +25,7 @@
 num_words="4"
 word_list="./wordlist.txt"
 capitalize="0"
-output="sdtout"
+output="standard output"
 sep_str=""
 leet="0"
 min_len="4"
@@ -80,6 +81,11 @@ while getopts ":w:n:Ccs:Nm:M:hv" opt; do
 done
 shift $((OPTIND - 1))
 
+# read -r -d '' verbose_msg <<- EOV
+# Creating passphrase, consisting of ${num_words} words from ${word_list}.
+# The words have a minimum length of ${min_len} characters and a maximum of ${max_len}.
+# EOV
+
 formatted_wlist=$( tr --squeeze-repeats ' ' '\n' < "$word_list" \
     | awk -v a="$min_len" -v b="$max_len" '{ if( length($1) > a && length($1) < b ) print $1 }' \
     | sort --unique --ignore-case
@@ -93,6 +99,24 @@ function format() {
 }
 
 num_lines=$( wc --lines <<<"$formatted_wlist" )
+
+if [[ "$verbose" == 1 ]]; then
+    echo "Verbose output is on."
+    echo "Creating a passphrase consisting of ${num_words} words from ${word_list}."
+    echo -n "The word list contains ${num_lines} words within the requested range"
+    echo ", with a minimum length of ${min_len} characters and a maximum of ${max_len}."
+    echo "Outputting to ${output}."
+    if [[ "$capitalize" == 1 ]]; then
+        echo "Each word will be capitalized."
+    fi
+    if [[ -n "$sep_str" ]] ; then
+        echo "Each word will be separated by a \"$sep_str\"."
+    fi
+    if [[ "$leet" == 1 ]] ; then
+        echo "Some characters might be replaced in a '1337-speak' fashion."
+    fi
+fi
+
 
 if [[ "$num_lines" -lt 2048 ]]; then
     echo "Your wordlist is short, this might have security implications, you should expand it."
@@ -123,6 +147,10 @@ function copy_prg() {
     fi
 }
 
+
+if [[ "$verbose" == 1 ]]; then
+    echo -n "Passphrase: "
+fi
 
 if [[ "$output" == "clipboard" ]] ; then
     case $(copy_prg) in
