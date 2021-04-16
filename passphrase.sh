@@ -25,7 +25,7 @@ num_words="4"
 word_list="./wordlist.txt"
 capitalize="1"
 output="sdtout"
-sep=""
+sep_str=""
 leet="0"
 min_len="4"
 max_len="10"
@@ -56,7 +56,7 @@ Examples:
 Further documentation, help and contact options available here: https://github.com/Ginner/passphrase
 EOH
 
-while getopts ":w:n:CcsNm:M:hv" opt; do
+while getopts ":w:n:Ccs:Nm:M:hv" opt; do
     case ${opt} in
         w )
             if [[ -r "$OPTARG" ]] ; then
@@ -106,7 +106,12 @@ if [[ $capitalize == "1" ]] ; then
     phrase_list=$( sed 's/[^ ]\+/\L\u&/g' <<<"$phrase_list" ) ;
 fi
 
-phrase=$( tr -d '\n' <<<"$phrase_list" )
+# Turn the list of words into a phrase
+if [[ -n "$sep_str" ]] ; then
+    phrase=$( echo -n "$phrase_list" | tr --truncate-set1 '\n' "$sep_str" )
+else
+    phrase=$( tr -d '\n' <<<"$phrase_list" )
+fi
 
 function copy_prg() {
     if [[ -x "$( command -v xsel )" ]] ; then
