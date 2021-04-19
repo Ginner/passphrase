@@ -52,10 +52,6 @@ I will be hesitant to excessively complicate the program in order to safeguard a
 **The script has to remain easily auditable, even by a bash novice like myself.
 I find this paramount for the trust in the function it provides.**
 
-## Roadmap/Todos
-- [ ] Clear the passphrase in the clipboard after 45 seconds (Like `pass` does)
-      It'd be cool if the old content was preserved and available after the 45 second.
-
 ## Disclaimers
 
 ### Security
@@ -68,10 +64,10 @@ Some good advice could be:
 - Check your word list. The program, rudimentarily, checks it for shortness and uniqueness, however a rather long word list consisting of `word1, word2, ..., wordn` will pass those tests and make the passphrase sucky.
 - Check the output (you need to remember it, right?). This will mitigate the problem above.
 - Use words with a length of at least 4 characters and use at least 4 words in a phrase.
-- Consider the necessity of a memorable passphrase. A password manager-provided random password is better security-wise (You should definitely be using a password manager, I recommend [bitwarden](https://bitwarden.com/)).
+- Consider the necessity of a memorable passphrase. A password manager-provided random password is better security-wise (You should definitely be using a password manager, I personally recommend [bitwarden](https://bitwarden.com/)).
 
 Also, check the explanation of the comic [here](https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength), which also discusses the security.
-It should be said that a _truly random_ string of characters is a lot more secure, as described in the aforementioned discussion (and way harder to remember).
+It should be said that a _truly random_ string of characters is a lot more secure, as described in the aforementioned discussion (though way harder to remember).
 
 ### Performance
 The script is just various readily available Linux commands chained together and I have not optimized it for performance.
