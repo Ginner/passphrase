@@ -59,7 +59,7 @@ I find this paramount for the trust in the function it provides.**
 ## Disclaimers
 
 ### Security
-I cannot say much about the security of this script and the quality of the passphrases it provides (which relies heavily on the input).
+I cannot say much about the security of this script and the quality of the passphrases it provides (which relies heavily on the supplied wordlist).
 I am in no way well versed in the techniques and technicalities of security.
 There are no cryptography involved in the generation of the passphrases.
 I have, however, tried to include some security-minded checks.
@@ -68,6 +68,10 @@ Some good advice could be:
 - Check your word list. The program, rudimentarily, checks it for shortness and uniqueness, however a rather long word list consisting of `word1, word2, ..., wordn` will pass those tests and make the passphrase sucky.
 - Check the output (you need to remember it, right?). This will mitigate the problem above.
 - Use words with a length of at least 4 characters and use at least 4 words in a phrase.
+- Consider the necessity of a memorable passphrase. A password manager-provided random password is better security-wise (You should definitely be using a password manager, I recommend [bitwarden](https://bitwarden.com/)).
+
+Also, check the explanation of the comic [here](https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength), which also discusses the security.
+It should be said that a _truly random_ string of characters is a lot more secure, as described in the aforementioned discussion (and way harder to remember).
 
 ### Performance
 The script is just various readily available Linux commands chained together and I have not optimized it for performance.
@@ -76,4 +80,6 @@ If you plan on using the script in other programs, it might very well be a bottl
 
 
 ## References
+- https://xkcd.com/936/ - The basis of the program.
+- https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength - Explanation of the comic linked above and discussion on the security of it.
 - [Article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4965448/) Supplementary materials/Data_Sheet_1.xlsx: Brysbaert M, Stevens M, Mandera P, Keuleers E. How Many Words Do We Know? Practical Estimates of Vocabulary Size Dependent on Word Definition, the Degree of Language Input and the Participant's Age. Front Psychol. 2016;7:1116. Published 2016 Jul 29. doi:10.3389/fpsyg.2016.01116 (License: CC BY)
