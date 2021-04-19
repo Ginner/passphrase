@@ -18,6 +18,7 @@
 # TODO: Long options, Nah, getopts doesn't seem to support it.
 # TODO: -F option to force through warnings
 # TODO: Suppress output other than the phrase/suppress warnings.
+# TODO: Write to log, allow for custom log.
 # If --num-words is larger than the number of words in the wordlist, the words in the wordlist are all used and determines the length of the passphrase.
 # Formatting my 10k wordlist is instantaneous...
 
@@ -27,6 +28,7 @@ word_list="./wordlist.txt"
 capitalize="0"
 output="standard output"
 sep_str=""
+suppress="0"
 leet="0"
 min_len="4"
 max_len="10"
@@ -41,6 +43,7 @@ Generates a passphrase and prints to standard output.
     -C          Capitalize the used words
     -c          Output to clipboard
     -s STRING   Separator string
+    -S          Suppress output
     -N          Use '1337'-speak
     -m INTEGER  Minimum length of the words used in the phrase
     -M INTEGER  Maximum length of the words used in the phrase
@@ -57,7 +60,7 @@ Examples:
 Further documentation, help and contact options available here: https://github.com/Ginner/passphrase
 EOH
 
-while getopts ":w:n:Ccs:Nm:M:hv" opt; do
+while getopts ":w:n:Ccs:SNm:M:hv" opt; do
     case ${opt} in
         w )
             if [[ -r "$OPTARG" ]] ; then
@@ -68,14 +71,20 @@ while getopts ":w:n:Ccs:Nm:M:hv" opt; do
         C ) capitalize="1" ;;
         c ) output="clipboard" ;;
         s ) sep_str="$OPTARG" ;;
+        S ) suppress="1" ;;
         N ) leet="1" ;;
         m ) min_len="$OPTARG" ;;
         M ) max_len="$OPTARG" ;;
-        v ) verbose="1" ;;
+        v ) verbose="1"
+            if [[ "$suppress" -eq 1 ]]; then
+                echo "You cannot suppress output and have it verbose at the same time." >&2
+                exit 1
+            fi
+            ;;
         h ) echo "$helptext"
             exit 0
             ;;
-        * ) echo "Error. Use passphrase -h for help on usage." >&2
+        * ) echo "$OPTARG is not a recognized flag or command. Use passphrase -h for help on usage." >&2
             exit 1
     esac
 done
@@ -86,10 +95,27 @@ shift $((OPTIND - 1))
 # The words have a minimum length of ${min_len} characters and a maximum of ${max_len}.
 # EOV
 
-formatted_wlist=$( tr --squeeze-repeats ' ' '\n' < "$word_list" \
-    | awk -v a="$min_len" -v b="$max_len" '{ if( length($1) > a && length($1) < b ) print $1 }' \
-    | sort --unique --ignore-case
-)
+function copy_prg() {
+    if [[ -x "$( command -v xsel )" ]] ; then
+        echo "xsel"
+    elif [[ -x "$( command -v xclip )" ]] ; then
+        echo "xclip"
+    else
+        echo "none"
+    fi
+}
+
+function prnt_verbose() {
+    if [[ "$verbose" -eq 1 ]] ;  then
+        echo "$1"
+    fi
+}
+
+function prnt_info() {
+    if [[ "$suppress" -eq 0 ]] ; then
+        echo "$1"
+    fi
+}
 
 function format() {
     command cat "$@" \
@@ -97,6 +123,12 @@ function format() {
         | awk -v a="$min_len" -v b="$max_len" '{ if(( length("$1") > a ) && (length("$1") < b )) print "$1" }' \
         | sort --unique --ignore-case
 }
+
+formatted_wlist=$( tr --squeeze-repeats ' ' '\n' < "$word_list" \
+    | awk -v a="$min_len" -v b="$max_len" '{ if( length($1) > a && length($1) < b ) print $1 }' \
+    | sort --unique --ignore-case
+)
+
 
 num_lines=$( wc --lines <<<"$formatted_wlist" )
 
@@ -119,9 +151,9 @@ fi
 
 
 if [[ "$num_lines" -lt 2048 ]]; then
-    echo "Your wordlist is short, this might have security implications, you should expand it."
+    prnt_info "Your wordlist is short, this might have security implications, you should expand it."
 elif [[ "$num_lines" -gt 45000 ]]; then
-    echo "Wow! Your word list is mighty big, this might have some performance impact."
+    prnt_info "Wow! Your word list is mighty big, this might have some performance impact."
 fi
 
 phrase_list=$( shuf --head-count="$num_words" <<<"$formatted_wlist" )
@@ -137,18 +169,8 @@ else
     phrase=$( tr -d '\n' <<<"$phrase_list" )
 fi
 
-function copy_prg() {
-    if [[ -x "$( command -v xsel )" ]] ; then
-        echo "xsel"
-    elif [[ -x "$( command -v xclip )" ]] ; then
-        echo "xclip"
-    else
-        echo "none"
-    fi
-}
 
-
-if [[ "$verbose" == 1 ]]; then
+if [[ "$verbose" -eq 1 ]]; then
     echo -n "Passphrase: "
 fi
 
@@ -156,13 +178,13 @@ if [[ "$output" == "clipboard" ]] ; then
     case $(copy_prg) in
         "xsel")
             echo "$phrase" | xsel --input --clipboard --selectionTimeout 45000
-            echo "Phrase copied to clipboard, it will clear in 45 seconds."
+            prnt_info "Phrase copied to clipboard, it will clear in 45 seconds."
             ;;
         "xclip")
             echo "$phrase" | xclip -in -selection "clipboard"
-            echo "Phrase copied to clipboard and it will remain there until replaced!"
-            echo "It is highly recommended that you copy something to the clipboard"
-            echo "selection when you are done using the phrase."
+            prnt_info "Phrase copied to clipboard and it will remain there until replaced!"
+            prnt_info "It is highly recommended that you copy something to the clipboard"
+            prnt_info "selection when you are done using the phrase."
             ;;
         "none")
             echo "xsel(recommended) or xclip is required for clipboard functionality." >&2
