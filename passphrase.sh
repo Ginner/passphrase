@@ -1,26 +1,10 @@
 #!/bin/bash
-#-x
 #
 # Generate a passphrase based on the XKCD-comic: https://xkcd.com/936/
 
-# Provide flags for:
-#   - Number of words (default: 4) -n,--num-words <#>
-#   - Wordlist (default:min_ord_liste) -w,--word-list <file>
-#   - Capitalize words (defualt: no (makes it easier to distinguish the words)) -C,--capitalize
-#   - Output to clipboard (default: stdout) -c, --clipboard
-#   - Separator? (default: None) -s,--separator <separator string>
-#   - 1337 speak? (default: Nope) -N,--leet
-#   - Minimum word length (default: 4) -m,--min-word-len <#>
-#   - Maximum word length (default: None) -M, --max-word-len <#>
-#   - Show help (default: no) -h,--help
-#   - Verbose output (default: no) -v,--verbose
 
 # TODO: Long options, Nah, getopts doesn't seem to support it.
-# TODO: -F option to force through warnings
-# TODO: Suppress output other than the phrase/suppress warnings.
 # TODO: Write to log, allow for custom log.
-# If --num-words is larger than the number of words in the wordlist, the words in the wordlist are all used and determines the length of the passphrase.
-# Formatting my 10k wordlist is instantaneous...
 
 # Default options
 num_words="4"
@@ -90,10 +74,6 @@ while getopts ":w:n:Ccs:SNm:M:hv" opt; do
 done
 shift $((OPTIND - 1))
 
-# read -r -d '' verbose_msg <<- EOV
-# Creating passphrase, consisting of ${num_words} words from ${word_list}.
-# The words have a minimum length of ${min_len} characters and a maximum of ${max_len}.
-# EOV
 
 function copy_prg() {
     if [[ -x "$( command -v xsel )" ]] ; then
@@ -105,11 +85,13 @@ function copy_prg() {
     fi
 }
 
+
 function prnt_verbose() {
     if [[ "$verbose" -eq 1 ]] ;  then
         echo "$1"
     fi
 }
+
 
 function prnt_info() {
     if [[ "$suppress" -eq 0 ]] ; then
@@ -117,12 +99,6 @@ function prnt_info() {
     fi
 }
 
-function format() {
-    command cat "$@" \
-        | tr --squeeze-repeats ' ' '\n' \
-        | awk -v a="$min_len" -v b="$max_len" '{ if(( length("$1") > a ) && (length("$1") < b )) print "$1" }' \
-        | sort --unique --ignore-case
-}
 
 formatted_wlist=$( tr --squeeze-repeats ' ' '\n' < "$word_list" \
     | awk -v a="$min_len" -v b="$max_len" '{ if( length($1) > a && length($1) < b ) print $1 }' \
