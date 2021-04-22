@@ -5,6 +5,9 @@ I sometimes use passphrases as described in the linked comic.
 Humans are bad at randomness, so making words up myself was unreliable and insecure.
 I've tried the online generators, but cannot shake the feeling that once the passphrase is provided, it simultaneously end up, prehashed, in all the rainbow tables.
 
+## Requirements
+The script uses a lot of standard Linux command line tools. However I, at least, had to install the following:
+- Clipboard functionality requires `xsel` or `xclip`.
 
 ## Word lists
 I've found comprehensive word lists online consisting of over 300k words.
@@ -79,3 +82,5 @@ If you plan on using the script in other programs, it might very well be a bottl
 - https://xkcd.com/936/ - The basis of the program.
 - https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength - Explanation of the comic linked above and discussion on the security of it.
 - [Article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4965448/) Supplementary materials/Data_Sheet_1.xlsx: Brysbaert M, Stevens M, Mandera P, Keuleers E. How Many Words Do We Know? Practical Estimates of Vocabulary Size Dependent on Word Definition, the Degree of Language Input and the Participant's Age. Front Psychol. 2016;7:1116. Published 2016 Jul 29. doi:10.3389/fpsyg.2016.01116 (License: CC BY)
+- [xsel](https://github.com/kfish/xsel)
+- [xclip](https://github.com/astrand/xclip)
