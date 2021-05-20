@@ -4,10 +4,13 @@
 # Generate a passphrase based on the XKCD-comic: https://xkcd.com/936/
 # By ***REMOVED***
 #
-# Last modified: 2021.04.21-22:17 +0200
+# Last modified: 2021.05.20-11:53 +0200
 #
 # =============================================================== #
 
+# TODO: Insert number at random between 2 words
+# TODO: Use system variable for assigning wordlist
+# TODO: Don't use getopts.
 # TODO: Long options, Nah, getopts doesn't seem to support it.
 # TODO: Write to log, allow for custom log.
 
