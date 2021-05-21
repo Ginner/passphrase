@@ -84,3 +84,6 @@ If you plan on using the script in other programs, it might very well be a bottl
 - [Article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4965448/) Supplementary materials/Data_Sheet_1.xlsx: Brysbaert M, Stevens M, Mandera P, Keuleers E. How Many Words Do We Know? Practical Estimates of Vocabulary Size Dependent on Word Definition, the Degree of Language Input and the Participant's Age. Front Psychol. 2016;7:1116. Published 2016 Jul 29. doi:10.3389/fpsyg.2016.01116 (License: CC BY)
 - [xsel](https://github.com/kfish/xsel)
 - [xclip](https://github.com/astrand/xclip)
+
+### Similar projects
+- https://github.com/redacted/XKCD-password-generator
