@@ -87,3 +87,4 @@ If you plan on using the script in other programs, it might very well be a bottl
 
 ### Similar projects
 - https://github.com/redacted/XKCD-password-generator
+- [pwgen](https://linux.die.net/man/1/pwgen)
