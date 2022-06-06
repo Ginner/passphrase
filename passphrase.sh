@@ -4,12 +4,12 @@
 # Generate a passphrase based on the XKCD-comic: https://xkcd.com/936/
 # By ***REMOVED***
 #
-# Last modified: 2021.05.21-14:40 +0200
+# Last modified: 2022.06.06-20:10 +0200
 #
 # =============================================================== #
 
 # TODO: Insert number at random between 2 words
-# TODO: Option to output to puth stdout and clipboard. Good for CLI commands
+# TODO: Option to output to stdout and clipboard. Good for CLI commands
 #       E.g. add the passphrase to `pass` and the clipboard for inserting wherever
 # TODO: Use system variable for assigning wordlist
 # TODO: Don't use getopts.
@@ -163,11 +163,11 @@ fi
 if [[ "$output" == "clipboard" ]] ; then
     case $(copy_prg) in
         "xsel")
-            echo "$phrase" | xsel --input --clipboard --selectionTimeout 45000
+            echo -n "$phrase" | xsel --input --clipboard --selectionTimeout 45000
             prnt_info "Phrase copied to clipboard, it will clear in 45 seconds."
             ;;
         "xclip")
-            echo "$phrase" | xclip -in -selection "clipboard"
+            echo -n "$phrase" | xclip -in -selection "clipboard"
             prnt_info "Phrase copied to clipboard and it will remain there until replaced!"
             prnt_info "It is highly recommended that you copy something to the clipboard"
             prnt_info "selection when you are done using the phrase."
