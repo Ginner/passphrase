@@ -21,6 +21,7 @@ Further more, I think there might be security improvements in 'creating' and, at
 The search word to use when creating such lists is 'lemma'.
 It kind of means the word you would find in a dictionary, i.e. not aa, aaa, etc.
 I know there are many governments who provide word lists as part of their 'Department of literature' or whatever.
+See for instance, EFF's wordlists, they provide both a [long](https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt) and a [short](https://www.eff.org/files/2016/09/08/eff_short_wordlist_1.txt) one.
 
 This kinda brings me to another point; maybe use a word list in your native language for an increase in rememberability and a possible (slight) increase in security.
 
@@ -79,6 +80,8 @@ If you plan on using the script in other programs, it might very well be a bottl
 
 
 ## References
+- https://www.eff.org/dice - EFF article on dice generated passwords.
+- https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases - EFF article on their wordlists.
 - https://xkcd.com/936/ - The basis of the program.
 - https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength - Explanation of the comic linked above and discussion on the security of it.
 - [Article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4965448/) Supplementary materials/Data_Sheet_1.xlsx: Brysbaert M, Stevens M, Mandera P, Keuleers E. How Many Words Do We Know? Practical Estimates of Vocabulary Size Dependent on Word Definition, the Degree of Language Input and the Participant's Age. Front Psychol. 2016;7:1116. Published 2016 Jul 29. doi:10.3389/fpsyg.2016.01116 (License: CC BY)
